@@ -127,8 +127,18 @@
       // Fetch Campaign Data
       async function fetchCampaigns() {
         try {
-          const response = await fetch('/models/campaigns');
+            console.log("Fetching campaigns...");
+          // const response = await fetch('/api/campaigns');
+          const response = await fetch('http://localhost:5000/api/campaigns');
+
+          console.log("Response received:", response);
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
           const campaigns = await response.json();
+          console.log("Campaigns data:", campaigns);
 
           if (campaigns.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="5">No campaigns available</td></tr>';
@@ -158,7 +168,7 @@
       // Update Campaign Status
       async function updateCampaignStatus(id, status) {
         try {
-          const response = await fetch(`/api/campaigns/${id}`, {
+          const response = await fetch(`http://localhost:5000/api/campaigns/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status }),

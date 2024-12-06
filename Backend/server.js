@@ -120,8 +120,8 @@ app.use("/api", locationRoutes);
 const authRoutes = require("./routes/authenticationRoutes"); // Import your auth routes
 app.use("/api/auth", authRoutes); // Mount auth routes under '/api/auth'
 
-const campaignRoutes = require("./routes/CampaignsRoutes"); // Import campaigns route
-app.use("/api", campaignRoutes); // Mount the campaigns route  
+const campaignRoutes = require('./routes/CampaignsRoutes');
+app.use('/api', campaignRoutes);
 
 // const campaignRoutes = require('./routes/campaignRoutes'); // Adjust the path
 // app.use('/api', campaignRoutes); // Mount routes at '/api'
