@@ -1,13 +1,12 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-// Define Campaign schema
-const CampaignSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  date: { type: Date, required: true },
-  timeSlot: { type: String, required: true },
-  videoType: { type: String, required: true }, // e.g., "youtube"
-  videoData: { type: String, required: true }, // URL or video path
+const campaignSchema = new mongoose.Schema({
+  name: String,
+  start_date: Date,
+  end_date: Date,
+  status: String,
+  videoLink: String // Add this field
 });
 
-module.exports = mongoose.model("Campaign", CampaignSchema);
+const Campaign = mongoose.model('Campaign', campaignSchema);
+module.exports = Campaign;
