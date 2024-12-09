@@ -284,92 +284,332 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Get city name from URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const cityName = urlParams.get("city");
-      document.getElementById("city-name").innerText = `${cityName} City Information`;
+//     document.addEventListener("DOMContentLoaded", function () {
+//       // Get city name from URL
+//       const urlParams = new URLSearchParams(window.location.search);
+//       const cityName = urlParams.get("city");
+//       document.getElementById("city-name").innerText = `${cityName} City Information`;
 
-      // Fetch data from the API
-      fetch("http://localhost:5000/api/locations")
-        .then((response) => response.json())
-        .then((data) => {
-          // Find the data for the selected city
-          const cityData = data.find(
-            (location) => location.city === cityName
-          );
-          if (cityData) {
-            // Loop through the routes of the selected city and dynamically create cards
-            const locationsContainer = document.querySelector(".locations");
-            cityData.routes.forEach((route) => {
-              const locationCard = document.createElement("div");
-              locationCard.className = "location-card";
-              locationCard.id = route.id;
+//       // Fetch data from the API
+//       fetch("http://localhost:5000/api/locations")
+//         .then((response) => response.json())
+//         .then((data) => {
+//           // Find the data for the selected city
+//           const cityData = data.find(
+//             (location) => location.city === cityName
+//           );
+//           if (cityData) {
+//             // Loop through the routes of the selected city and dynamically create cards
+//             const locationsContainer = document.querySelector(".locations");
+//             cityData.routes.forEach((route) => {
+//               const locationCard = document.createElement("div");
+//               locationCard.className = "location-card";
+//               locationCard.id = route.id;
 
-              const locationTitle = document.createElement("h3");
-              locationTitle.innerText = route.name;
+//               const locationTitle = document.createElement("h3");
+//               locationTitle.innerText = route.name;
 
-              const locationDescription = document.createElement("p");
-              locationDescription.innerText = route.description;
+//               const locationDescription = document.createElement("p");
+//               locationDescription.innerText = route.description;
 
-              locationCard.appendChild(locationTitle);
-              locationCard.appendChild(locationDescription);
+//               locationCard.appendChild(locationTitle);
+//               locationCard.appendChild(locationDescription);
 
-              // Add the card to the locations container
-              locationsContainer.appendChild(locationCard);
-            });
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching location data:", error);
+//               // Add the card to the locations container
+//               locationsContainer.appendChild(locationCard);
+//             });
+//           }
+//         })
+//         .catch((error) => {
+//           console.error("Error fetching location data:", error);
+//         });
+
+//       // Add event listener to the locations container for dynamically created cards
+//       const dynamicContainer = document.getElementById("dynamic-container");
+//       document.querySelector(".locations").addEventListener("click", function (e) {
+//         if (e.target.closest(".location-card")) {
+//           const card = e.target.closest(".location-card");
+//           const locationId = card.id;
+
+//           // Show the dropdown menu below the clicked card
+//           let dropdown = card.querySelector(".location-dropdown");
+//           if (!dropdown) {
+//             dropdown = document.createElement("div");
+//             dropdown.className = "location-dropdown";
+//             dropdown.innerHTML = `
+//                 <label for="screen-select">Select Screen:</label>
+//                 <select id="screen-select">
+//                   <option value="">-- Select an Option --</option>
+//                   <option value="screen1">Screen 1</option>
+//                   <option value="screen2">Screen 2</option>
+//                 </select>
+//               `;
+//             card.appendChild(dropdown);
+//           }
+//           dropdown.style.display = "block";
+
+//           // Event listener for screen selection
+//           const screenSelect = dropdown.querySelector("#screen-select");
+//           screenSelect.addEventListener("change", function () {
+//             const selectedScreen = screenSelect.value;
+
+//             // Clear previous content in dynamic-container
+//             dynamicContainer.innerHTML = "";
+
+//             // Create the Calendar and Form containers
+//             const dynamicSection = document.createElement("div");
+//             dynamicSection.className = "dynamic-section";
+
+//             // Create calendar container
+//             const calendarContainer = document.createElement("div");
+//             calendarContainer.className = "calendar";
+
+//             // Create campaign form
+//             // Create campaign form
+//             const formContainer = document.createElement("div");
+//             formContainer.className = "campaign-form";
+//             formContainer.innerHTML = `
+//         <div id="campaign-form" >
+//             <label for="campaign-name">Campaign Name:</label>
+//             <input type="text" id="campaign-name" placeholder="Enter campaign name" required>
+
+//             <label for="campaign-description">Campaign Description:</label>
+//             <textarea id="campaign-description" placeholder="Enter campaign description" rows="3"></textarea>
+            
+//             <label for="campaign-date">Campaign Date:</label>
+//   <input type="text" id="campaign-date" placeholder="Select date using calendar" readonly />
+
+//   <label for="campaign-time-slot">Campaign Time Slot:</label>
+//   <input type="text" id="campaign-time-slot" placeholder="Select time slot using calendar" readonly />
+
+//             <label for="video-option">Choose Video Option:</label>
+//             <select id="video-option">
+//               <option value="">-- Select an Option --</option>
+//               <option value="youtube"> URL</option>
+//               //  
+//             </select>
+
+//             <div id="youtube-url-input" style="display: none">
+//               <label for="youtube-url"> URL:</label>
+//               <input type="url" id="youtube-url" placeholder="Enter YouTube URL">
+//             </div>
+
+           
+
+//             <button id="submit-campaign">Submit Campaign</button>
+//           </div>
+
+//         `;
+//             // Video option input handling
+// const videoOption = formContainer.querySelector("#video-option");
+// const youtubeInput = formContainer.querySelector("#youtube-url-input");
+// const fileInput = formContainer.querySelector("#file-upload-input");
+
+// videoOption.addEventListener("change", function () {
+//   if (videoOption.value === "youtube") {
+//     youtubeInput.style.display = "block";
+//     fileInput.style.display = "none";
+//   } else if (videoOption.value === "file") {
+//     youtubeInput.style.display = "none";
+//     fileInput.style.display = "block";
+//   } else {
+//     youtubeInput.style.display = "none";
+//     fileInput.style.display = "none";
+//   }
+// });
+
+//             // Append to the dynamic section
+//             dynamicSection.appendChild(calendarContainer);
+//             dynamicSection.appendChild(formContainer);
+//             dynamicContainer.appendChild(dynamicSection);
+
+//             // Initialize FullCalendar inside the calendar container
+//             const calendar = new FullCalendar.Calendar(calendarContainer, {
+//               initialView: "timeGridWeek",
+//               headerToolbar: {
+//                 left: "prev,next today",
+//                 center: "title",
+//                 right: "timeGridWeek,timeGridDay",
+//               },
+//               height: 600,
+//               selectable: true,
+//               select: function (info) {
+//                 // Update form fields when a time slot is selected
+//                 const dateField = document.querySelector("#campaign-date");
+//                 const timeSlotField = document.querySelector("#campaign-time-slot");
+
+//                 if (!dateField || !timeSlotField) {
+//                   console.error("Form fields for campaign date or time slot not found.");
+//                   return;
+//                 }
+
+//                 dateField.value = info.startStr.split("T")[0];
+//                 timeSlotField.value = `${info.startStr.split("T")[1]} - ${info.endStr.split("T")[1]}`;
+//               },
+//             });
+//             // Event listener to handle video option selection
+//             document.addEventListener("change", function (e) {
+//               const videoOption = document.querySelector("#video-option");
+//               const youtubeInput = document.querySelector("#youtube-url-input");
+//               const fileInput = document.querySelector("#file-upload-input");
+
+//               if (videoOption) {
+//                 videoOption.addEventListener("change", function () {
+//                   if (videoOption.value === "youtube") {
+//                     youtubeInput.style.display = "block";
+//                     fileInput.style.display = "none";
+//                   } else if (videoOption.value === "file") {
+//                     youtubeInput.style.display = "none";
+//                     fileInput.style.display = "block";
+//                   } else {
+//                     youtubeInput.style.display = "none";
+//                     fileInput.style.display = "none";
+//                   }
+//                 });
+//               }
+//             });
+
+
+//             calendar.render();
+
+//             document.querySelector("#submit-campaign").addEventListener("click", async (event) => {
+//   event.preventDefault(); // Prevent page refresh
+
+//   // Collect form data
+//   const campaignData = {
+//     name: document.querySelector("#campaign-name").value,
+//     description: document.querySelector("#campaign-description").value,
+//     date: document.querySelector("#campaign-date").value,
+//     timeSlot: document.querySelector("#campaign-time-slot").value,
+//     videoType: document.querySelector("#video-option").value,
+//     videoData:
+//       document.querySelector("#video-option").value === "youtube"
+//         ? document.querySelector("#youtube-url").value
+//         : document.querySelector("#video-file").files[0], // Get uploaded file if selected
+//   };
+
+//   console.log("Submitting campaign data:", campaignData);
+
+//   try {
+//     const response = await fetch("http://localhost:5000/api/campaigns", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(campaignData),
+//     });
+
+//     if (response.ok) {
+//       alert("Campaign submitted successfully!");
+//       document.querySelector("#campaign-form").reset(); // Clear form after submission
+//     } else {
+//       alert("Failed to submit campaign. Please check your input.");
+//     }
+//   } catch (error) {
+//     console.error("Error submitting campaign:", error);
+//     alert("An error occurred while submitting the campaign.");
+//   }
+// });
+
+
+//           });
+//         }
+//       });
+//     });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Get city name from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const cityName = urlParams.get("city");
+  document.getElementById("city-name").innerText = `${cityName} City Information`;
+
+  // Fetch data from the API
+  fetch("http://localhost:5000/api/locations")
+    .then((response) => response.json())
+    .then((data) => {
+      const cityData = data.find((location) => location.city === cityName);
+      if (cityData) {
+        const locationsContainer = document.querySelector(".locations");
+        cityData.routes.forEach((route) => {
+          const locationCard = document.createElement("div");
+          locationCard.className = "location-card";
+          locationCard.id = route.id;
+
+          const locationTitle = document.createElement("h3");
+          locationTitle.innerText = route.name;
+
+          const locationDescription = document.createElement("p");
+          locationDescription.innerText = route.description;
+
+          locationCard.appendChild(locationTitle);
+          locationCard.appendChild(locationDescription);
+
+          locationsContainer.appendChild(locationCard);
         });
+      }
+    })
+    .catch((error) => console.error("Error fetching location data:", error));
 
-      // Add event listener to the locations container for dynamically created cards
-      const dynamicContainer = document.getElementById("dynamic-container");
-      document.querySelector(".locations").addEventListener("click", function (e) {
-        if (e.target.closest(".location-card")) {
-          const card = e.target.closest(".location-card");
-          const locationId = card.id;
+  const dynamicContainer = document.getElementById("dynamic-container");
+  let activeDropdown = null;
 
-          // Show the dropdown menu below the clicked card
-          let dropdown = card.querySelector(".location-dropdown");
-          if (!dropdown) {
-            dropdown = document.createElement("div");
-            dropdown.className = "location-dropdown";
-            dropdown.innerHTML = `
-                <label for="screen-select">Select Screen:</label>
-                <select id="screen-select">
-                  <option value="">-- Select an Option --</option>
-                  <option value="screen1">Screen 1</option>
-                  <option value="screen2">Screen 2</option>
-                </select>
-              `;
-            card.appendChild(dropdown);
-          }
-          dropdown.style.display = "block";
+  document.querySelector(".locations").addEventListener("click", function (e) {
+    if (e.target.closest(".location-card")) {
+      const card = e.target.closest(".location-card");
 
-          // Event listener for screen selection
-          const screenSelect = dropdown.querySelector("#screen-select");
-          screenSelect.addEventListener("change", function () {
-            const selectedScreen = screenSelect.value;
+      // Hide the previous dropdown and clear dynamic content
+      if (activeDropdown && activeDropdown !== card) {
+        activeDropdown.querySelector(".location-dropdown")?.remove();
+        dynamicContainer.innerHTML = "";
+      }
 
-            // Clear previous content in dynamic-container
-            dynamicContainer.innerHTML = "";
+      activeDropdown = card; // Update the active card
+      const locationId = card.id;
 
-            // Create the Calendar and Form containers
-            const dynamicSection = document.createElement("div");
-            dynamicSection.className = "dynamic-section";
+      let dropdown = card.querySelector(".location-dropdown");
+      if (!dropdown) {
+        dropdown = document.createElement("div");
+        dropdown.className = "location-dropdown";
+        dropdown.innerHTML = `
+          <label for="screen-select">Select Screen:</label>
+          <select id="screen-select">
+            <option value="">-- Select an Option --</option>
+            <option value="screen1">Screen 1</option>
+            <option value="screen2">Screen 2</option>
+          </select>
+        `;
+        card.appendChild(dropdown);
+      }
 
-            // Create calendar container
-            const calendarContainer = document.createElement("div");
-            calendarContainer.className = "calendar";
+      dropdown.style.display = "block";
 
-            // Create campaign form
-            // Create campaign form
-            const formContainer = document.createElement("div");
-            formContainer.className = "campaign-form";
-            formContainer.innerHTML = `
-        <div id="campaign-form" >
+      // Event listener for screen selection
+      const screenSelect = dropdown.querySelector("#screen-select");
+      screenSelect.addEventListener("change", function () {
+        const selectedScreen = screenSelect.value;
+
+        // Hide dynamic content if no screen is selected
+        if (!selectedScreen) {
+          dynamicContainer.innerHTML = "";
+          return;
+        }
+
+        // Clear previous content in dynamic-container
+        dynamicContainer.innerHTML = "";
+
+        // Create the Calendar and Form containers
+        const dynamicSection = document.createElement("div");
+        dynamicSection.className = "dynamic-section";
+
+        // Calendar
+        const calendarContainer = document.createElement("div");
+        calendarContainer.className = "calendar";
+
+        // Campaign form
+        const formContainer = document.createElement("div");
+        formContainer.className = "campaign-form";
+        formContainer.innerHTML = `
+          <div id="campaign-form">
             <label for="campaign-name">Campaign Name:</label>
             <input type="text" id="campaign-name" placeholder="Enter campaign name" required>
 
@@ -377,145 +617,92 @@
             <textarea id="campaign-description" placeholder="Enter campaign description" rows="3"></textarea>
             
             <label for="campaign-date">Campaign Date:</label>
-  <input type="text" id="campaign-date" placeholder="Select date using calendar" readonly />
+            <input type="text" id="campaign-date" placeholder="Select date using calendar" readonly />
 
-  <label for="campaign-time-slot">Campaign Time Slot:</label>
-  <input type="text" id="campaign-time-slot" placeholder="Select time slot using calendar" readonly />
+            <label for="campaign-time-slot">Campaign Time Slot:</label>
+            <input type="text" id="campaign-time-slot" placeholder="Select time slot using calendar" readonly />
 
             <label for="video-option">Choose Video Option:</label>
             <select id="video-option">
               <option value="">-- Select an Option --</option>
-              <option value="youtube"> URL</option>
-              //  
+              <option value="youtube">YouTube URL</option>
             </select>
 
-            <div id="youtube-url-input" style="display: none">
-              <label for="youtube-url"> URL:</label>
+            <div id="youtube-url-input" style="display: none;">
+              <label for="youtube-url">YouTube URL:</label>
               <input type="url" id="youtube-url" placeholder="Enter YouTube URL">
             </div>
 
-           
-
             <button id="submit-campaign">Submit Campaign</button>
           </div>
-
         `;
-            // Video option input handling
-const videoOption = formContainer.querySelector("#video-option");
-const youtubeInput = formContainer.querySelector("#youtube-url-input");
-const fileInput = formContainer.querySelector("#file-upload-input");
 
-videoOption.addEventListener("change", function () {
-  if (videoOption.value === "youtube") {
-    youtubeInput.style.display = "block";
-    fileInput.style.display = "none";
-  } else if (videoOption.value === "file") {
-    youtubeInput.style.display = "none";
-    fileInput.style.display = "block";
-  } else {
-    youtubeInput.style.display = "none";
-    fileInput.style.display = "none";
-  }
-});
+        dynamicSection.appendChild(calendarContainer);
+        dynamicSection.appendChild(formContainer);
+        dynamicContainer.appendChild(dynamicSection);
 
-            // Append to the dynamic section
-            dynamicSection.appendChild(calendarContainer);
-            dynamicSection.appendChild(formContainer);
-            dynamicContainer.appendChild(dynamicSection);
+        // Initialize FullCalendar
+        const calendar = new FullCalendar.Calendar(calendarContainer, {
+          initialView: "timeGridWeek",
+          headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "timeGridWeek,timeGridDay",
+          },
+          height: 600,
+          selectable: true,
+          select: function (info) {
+            document.querySelector("#campaign-date").value = info.startStr.split("T")[0];
+            document.querySelector("#campaign-time-slot").value = `${info.startStr.split("T")[1]} - ${info.endStr.split("T")[1]}`;
+          },
+        });
+        calendar.render();
 
-            // Initialize FullCalendar inside the calendar container
-            const calendar = new FullCalendar.Calendar(calendarContainer, {
-              initialView: "timeGridWeek",
-              headerToolbar: {
-                left: "prev,next today",
-                center: "title",
-                right: "timeGridWeek,timeGridDay",
-              },
-              height: 600,
-              selectable: true,
-              select: function (info) {
-                // Update form fields when a time slot is selected
-                const dateField = document.querySelector("#campaign-date");
-                const timeSlotField = document.querySelector("#campaign-time-slot");
+        // Handle video option selection
+        const videoOption = document.querySelector("#video-option");
+        const youtubeInput = document.querySelector("#youtube-url-input");
 
-                if (!dateField || !timeSlotField) {
-                  console.error("Form fields for campaign date or time slot not found.");
-                  return;
-                }
+        videoOption.addEventListener("change", function () {
+          youtubeInput.style.display = videoOption.value === "youtube" ? "block" : "none";
+        });
 
-                dateField.value = info.startStr.split("T")[0];
-                timeSlotField.value = `${info.startStr.split("T")[1]} - ${info.endStr.split("T")[1]}`;
-              },
-            });
-            // Event listener to handle video option selection
-            document.addEventListener("change", function (e) {
-              const videoOption = document.querySelector("#video-option");
-              const youtubeInput = document.querySelector("#youtube-url-input");
-              const fileInput = document.querySelector("#file-upload-input");
+        // Campaign submission logic
+        document.querySelector("#submit-campaign").addEventListener("click", async (event) => {
+          event.preventDefault();
 
-              if (videoOption) {
-                videoOption.addEventListener("change", function () {
-                  if (videoOption.value === "youtube") {
-                    youtubeInput.style.display = "block";
-                    fileInput.style.display = "none";
-                  } else if (videoOption.value === "file") {
-                    youtubeInput.style.display = "none";
-                    fileInput.style.display = "block";
-                  } else {
-                    youtubeInput.style.display = "none";
-                    fileInput.style.display = "none";
-                  }
-                });
-              }
+          const campaignData = {
+            name: document.querySelector("#campaign-name").value,
+            description: document.querySelector("#campaign-description").value,
+            date: document.querySelector("#campaign-date").value,
+            timeSlot: document.querySelector("#campaign-time-slot").value,
+            videoType: videoOption.value,
+            videoData: youtubeInput.style.display === "block" ? document.querySelector("#youtube-url").value : null,
+          };
+
+          console.log("Submitting campaign data:", campaignData);
+
+          try {
+            const response = await fetch("http://localhost:5000/api/campaigns", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(campaignData),
             });
 
-
-            calendar.render();
-
-            document.querySelector("#submit-campaign").addEventListener("click", async (event) => {
-  event.preventDefault(); // Prevent page refresh
-
-  // Collect form data
-  const campaignData = {
-    name: document.querySelector("#campaign-name").value,
-    description: document.querySelector("#campaign-description").value,
-    date: document.querySelector("#campaign-date").value,
-    timeSlot: document.querySelector("#campaign-time-slot").value,
-    videoType: document.querySelector("#video-option").value,
-    videoData:
-      document.querySelector("#video-option").value === "youtube"
-        ? document.querySelector("#youtube-url").value
-        : document.querySelector("#video-file").files[0], // Get uploaded file if selected
-  };
-
-  console.log("Submitting campaign data:", campaignData);
-
-  try {
-    const response = await fetch("http://localhost:5000/api/campaigns", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(campaignData),
-    });
-
-    if (response.ok) {
-      alert("Campaign submitted successfully!");
-      document.querySelector("#campaign-form").reset(); // Clear form after submission
-    } else {
-      alert("Failed to submit campaign. Please check your input.");
-    }
-  } catch (error) {
-    console.error("Error submitting campaign:", error);
-    alert("An error occurred while submitting the campaign.");
-  }
-});
-
-
-          });
-        }
+            if (response.ok) {
+              alert("Campaign submitted successfully!");
+              document.querySelector("#campaign-form").reset();
+            } else {
+              alert("Failed to submit campaign. Please check your input.");
+            }
+          } catch (error) {
+            console.error("Error submitting campaign:", error);
+            alert("An error occurred while submitting the campaign.");
+          }
+        });
       });
-    });
+    }
+  });
+});
 
     document.querySelector("#video-file").addEventListener("change", function () {
   const file = this.files[0]; // Get the selected file
