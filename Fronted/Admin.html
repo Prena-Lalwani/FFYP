@@ -96,6 +96,39 @@
     .decline-btn:hover {
       background-color: #e53935;
     }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 4px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -60px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .tooltip .tooltiptext:hover {
+      cursor: pointer;
+      background-color: #4CAF50;
+    }
   </style>
 </head>
 <body>
@@ -108,10 +141,8 @@
           <tr>
             <th>Name</th>
             <th>Start Date</th>
-            <th>End Date</th>
-            <th>Status</th>
-            <th>Video Link</th> <!-- New column -->
-            <th>Actions</th>
+            <th>Time</th>
+            <th>Video Link</th>
           </tr>
         </thead>
         <tbody>
@@ -128,80 +159,87 @@
       // Fetch Campaign Data
       async function fetchCampaigns() {
         try {
-            console.log("Fetching campaigns...");
-          // const response = await fetch('/api/campaigns');
           const response = await fetch('http://localhost:5000/api/campaigns');
-
-          console.log("Response received:", response);
 
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+          }
 
           const campaigns = await response.json();
-          console.log("Campaigns data:", campaigns);
 
           if (campaigns.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="5">No campaigns available</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="6">No campaigns available</td></tr>';
             return;
           }
 
-          // tableBody.innerHTML = campaigns.map(campaign => `
-          //   <tr>
-          //     <td>${campaign.name}</td>
-          //     <td>${campaign.start_date}</td>
-          //     <td>${campaign.end_date}</td>
-          //     <td>${campaign.status}</td>
-          //     <td>
-          //       <div class="action-buttons">
-          //         <button class="accept-btn" onclick="updateCampaignStatus('${campaign._id}', 'Accepted')">Accept</button>
-          //         <button class="decline-btn" onclick="updateCampaignStatus('${campaign._id}', 'Declined')">Decline</button>
-          //       </div>
-          //     </td>
-          //   </tr>
-          // `).join('');
           tableBody.innerHTML = campaigns.map(campaign => `
-  <tr>
+  <tr data-id="${campaign._id}">
     <td>${campaign.name}</td>
-    <td>${campaign.start_date || 'N/A'}</td>
-    <td>${campaign.end_date || 'N/A'}</td>
-    <td>${campaign.status || 'Pending'}</td>
+    <td>${campaign.date ? new Date(campaign.date).toLocaleDateString() : 'N/A'}</td>
+    <td>${campaign.timeSlot || 'N/A'}</td>
     <td>
-      ${campaign.videoLink 
-        ? `<a href="${campaign.videoLink}" target="_blank">Watch Video</a>` 
+      ${campaign.videoData && campaign.videoType === 'youtube'
+        ? `
+          <div class="tooltip">
+            <a href="${campaign.videoData}" target="_blank">Watch Video</a>
+            <span class="tooltiptext" onclick="copyToClipboard('${campaign.videoData}')">Copy Link</span>
+          </div>`
         : 'No Link'}
-    </td>
-    <td>
-      <div class="action-buttons">
-        <button class="accept-btn" onclick="updateCampaignStatus('${campaign._id}', 'Accepted')">Accept</button>
-        <button class="decline-btn" onclick="updateCampaignStatus('${campaign._id}', 'Declined')">Decline</button>
-      </div>
     </td>
   </tr>
 `).join('');
 
+
+          attachActionListeners();
         } catch (error) {
           console.error('Error fetching campaigns:', error);
-          tableBody.innerHTML = '<tr><td colspan="5">Error loading campaigns</td></tr>';
+          tableBody.innerHTML = '<tr><td colspan="6">Error loading campaigns</td></tr>';
         }
       }
 
       // Update Campaign Status
-      async function updateCampaignStatus(id, status) {
+      async function updateCampaignStatus(campaignId, status) {
         try {
-          const response = await fetch(`http://localhost:5000/api/campaigns/${id}`, {
+          const response = await fetch(`http://localhost:5000/api/campaigns/${campaignId}/status`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status }),
           });
 
-          const result = await response.json();
-          alert(result.message || 'Campaign status updated');
-          fetchCampaigns(); // Refresh data
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          alert(`Campaign status updated to: ${status}`);
+          fetchCampaigns(); // Refresh table data
         } catch (error) {
           console.error('Error updating campaign status:', error);
-          alert('Failed to update campaign status');
+          alert('Failed to update campaign status.');
         }
+      }
+
+      // Attach event listeners to buttons
+      function attachActionListeners() {
+        document.querySelectorAll('.accept-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            const campaignId = button.getAttribute('data-id');
+            updateCampaignStatus(campaignId, 'Accepted');
+          });
+        });
+
+        document.querySelectorAll('.decline-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            const campaignId = button.getAttribute('data-id');
+            updateCampaignStatus(campaignId, 'Declined');
+          });
+        });
+      }
+
+      // Copy link to clipboard
+      function copyToClipboard(link) {
+        navigator.clipboard.writeText(link)
+          .then(() => alert('Link copied to clipboard!'))
+          .catch(err => console.error('Error copying text:', err));
       }
 
       // Initial Fetch
